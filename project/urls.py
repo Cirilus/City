@@ -9,15 +9,16 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 urlpatterns = [
-    path('django-admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
 
-    path('admin/', include(wagtailadmin_urls)),
+    path('cms/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
 
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
     path("auth/", include("Authentication.urls")),
+    path("api/", include("Object.urls")),
 
     re_path(r'', include(wagtail_urls)),
 ]

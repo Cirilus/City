@@ -1,13 +1,13 @@
 from django.urls import path, include, re_path
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import UserView
+from .views import CompanyView, AddCompanyView
 
 router = routers.DefaultRouter()
-router.register('', UserView, basename="user")
+router.register('company', CompanyView, basename="company")
+
 
 urlpatterns = [
     path("", include(router.urls)),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path("company/user/<int:id>", AddCompanyView.as_view({"post": "post"}), name="add user to company"),
 ]

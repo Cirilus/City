@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     'Authentication.apps.AuthenticationConfig',
+    'Object.apps.ObjectConfig',
 
 ]
 
