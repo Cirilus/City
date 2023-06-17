@@ -39,6 +39,12 @@ class UserView(GenericViewSet,
                UpdateModelMixin,
                DestroyModelMixin):
     serializer_class = UserSerializer
-    queryset = CustomUser
+
+    def get_object(self):
+        pk = self.kwargs['pk']
+        return get_object_or_404(CustomUser, id=pk)
+
+    def get_queryset(self):
+        return CustomUser.objects.all()
 
     http_method_names = ["patch", "get", "delete", "post"]

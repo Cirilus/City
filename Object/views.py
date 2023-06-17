@@ -40,7 +40,13 @@ class CompanyView(GenericViewSet,
                   UpdateModelMixin,
                   DestroyModelMixin):
     serializer_class = CompanySerializer
-    queryset = Company
+
+    def get_object(self):
+        pk = self.kwargs['pk']
+        return get_object_or_404(Company, id=pk)
+
+    def get_queryset(self):
+        return Company.objects.all()
 
     http_method_names = ["patch", "get", "delete", "post"]
 
