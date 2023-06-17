@@ -30,3 +30,13 @@ class Company(models.Model):
     longitude = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="долгота")
     category = models.CharField(max_length=50, choices=CategoryChoice.choices, verbose_name="категория")
     administrator = models.ManyToManyField(CustomUser, related_name="company")
+
+
+class Advertisement(models.Model):
+    title = models.CharField(max_length=30, verbose_name="заголовок")
+    body = models.TextField(verbose_name="главная часть")
+    email = models.CharField(max_length=30, verbose_name="Эмайл")
+    phone = models.CharField(max_length=30, verbose_name="телефон")
+    administrator = models.ManyToManyField(CustomUser, related_name="advertisement")
+    is_active = models.BooleanField(verbose_name="прошел модерацию", default=False)
+
