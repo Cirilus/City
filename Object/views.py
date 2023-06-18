@@ -9,8 +9,8 @@ from rest_framework.mixins import DestroyModelMixin, \
 
 from django.shortcuts import get_object_or_404, get_list_or_404
 
-from Object.models import Company, Advertisement
-from Object.serializers import CompanySerializer, AdvertisementSerializer
+from Object.models import Company, Advertisement, News
+from Object.serializers import CompanySerializer, AdvertisementSerializer, NewsSerializer
 
 
 @extend_schema_view(
@@ -126,6 +126,66 @@ class AddAdvertisementView(GenericViewSet):
         user_id = request.query_params.get("user_id")
         try:
             Advertisement.objects.get(pk=advertisement_id).administrator.add(user_id)
+        except Exception as e:
+            raise NotFound(e)
+        return Response(status=201)
+
+
+@extend_schema_view(
+    retrieve=extend_schema(
+        tags=['news'],
+        summary="return company by news",
+    ),
+    list=extend_schema(
+        tags=['news'],
+        summary="return all news"
+    ),
+    destroy=extend_schema(
+        tags=['news'],
+        summary="delete the news",
+    ),
+    partial_update=extend_schema(
+        tags=['news'],
+        summary="update the news"
+    ),
+    create=extend_schema(
+        tags=['news'],
+        summary="create the news"
+    ),
+)
+class NewsView(GenericViewSet,
+               ListModelMixin,
+               RetrieveModelMixin,
+               CreateModelMixin,
+               UpdateModelMixin,
+               DestroyModelMixin):
+    serializer_class = NewsSerializer
+    http_method_names = ["patch", "get", "delete", "post"]
+
+    def get_object(self):
+        pk = self.kwargs['pk']
+        news = get_object_or_404(News, id=pk)
+        if news.is_active:
+            return news
+        else:
+            raise APIException("The object haven't been moderated yet")
+
+    def get_queryset(self):
+        return News.objects.all().filter(is_active=True)
+
+
+class AddNewsView(GenericViewSet):
+    @extend_schema(tags=["news"],
+                   summary="add the user to news",
+                   parameters=[OpenApiParameter("user_id", str, "query", True)],
+                   responses={
+                       201: None
+                   }, )
+    def post(self, request, id):
+        news_id = id
+        user_id = request.query_params.get("user_id")
+        try:
+            News.objects.get(pk=news_id).administrator.add(user_id)
         except Exception as e:
             raise NotFound(e)
         return Response(status=201)

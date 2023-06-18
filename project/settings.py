@@ -21,6 +21,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
 
+    'wagtail.contrib.modeladmin',
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.embeds',

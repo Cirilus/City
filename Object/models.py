@@ -37,6 +37,16 @@ class Advertisement(models.Model):
     body = models.TextField(verbose_name="главная часть")
     email = models.CharField(max_length=30, verbose_name="Эмайл")
     phone = models.CharField(max_length=30, verbose_name="телефон")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время создание")
     administrator = models.ManyToManyField(CustomUser, related_name="advertisement")
     is_active = models.BooleanField(verbose_name="прошел модерацию", default=False)
+
+
+class News(models.Model):
+    title = models.CharField(max_length=30, verbose_name="заголовок")
+    body = models.TextField(verbose_name="главная часть")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время создание")
+    administrator = models.ManyToManyField(CustomUser, related_name="news")
+    is_active = models.BooleanField(verbose_name="прошел модерацию", default=False)
+
 

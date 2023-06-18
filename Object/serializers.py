@@ -5,7 +5,7 @@ from rest_framework.serializers import ModelSerializer, IntegerField, \
     Serializer, CharField, SerializerMethodField, DecimalField
 from yandex_geocoder import Client
 
-from Object.models import Company, Advertisement
+from Object.models import Company, Advertisement, News
 
 logger = logging.getLogger(__name__)
 
@@ -38,8 +38,18 @@ class CompanySerializer(ModelSerializer):
 class AdvertisementSerializer(ModelSerializer):
     class Meta:
         model = Advertisement
-        fields = ("id", "title", "body", "email", "phone", "administrator", "is_active")
+        fields = ("id", "title", "body", "email", "phone", "created_at", "administrator", "is_active")
         extra_kwargs = {
             'administrator': {'read_only': True},
-            '"is_active"': {'read_only': True},
+            "is_active": {'read_only': True},
+        }
+
+
+class NewsSerializer(ModelSerializer):
+    class Meta:
+        model = News
+        fields = ("id", "title", "body", "created_at", "administrator", "is_active")
+        extra_kwargs = {
+            'administrator': {'read_only': True},
+            "is_active": {'read_only': True},
         }
