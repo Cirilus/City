@@ -1,0 +1,12 @@
+container:
+  django:
+  postgres: postgres:latest
+
+
+config:
+  postgres:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DB: postgres
+
+replicasCount: 1

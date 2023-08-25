@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-django-app
+  labels:
+    app: {{ .Release.Name }}-django-app
+spec:
+  replicas: {{ .Values.replicasCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-django-app
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-django-app
+    spec:
+      containers:
+        - image: {{ .Values.container.django }}
+          name: {{ .Release.Name }}-django-app
+          ports:
+            - containerPort: 8000
+              name: gunicorn
+
+        - image: {{ .Values.container.postgres }}
+          name: {{ .Release.Name }}-postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.config.postgres.POSTGRES_USER }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.config.postgres.POSTGRES_PASSWORD }}
+            - name: POSTGRES_DB
+              value: {{ .Values.config.postgres.POSTGRES_DB }}
+

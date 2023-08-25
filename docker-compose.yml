@@ -28,6 +28,7 @@ services:
       ./manage.py migrate  &&
       ./manage.py initadmin &&
       gunicorn -b 0.0.0.0:8000 project.wsgi:application"
+
   nginx:
     build:
       dockerfile: ./Dockerfile
