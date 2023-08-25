@@ -8,5 +8,13 @@ config:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
     POSTGRES_DB: postgres
+    POSTGRES_PORT: 5432
+    POSTGRES_HOST: database
+  django:
+    SECRET_KEY: dsamdqwmdiq[mdcisapmcacxdsa
+    DEBUG: False
+    YANDEX_GEOCODER: test
+    port: 8000
+
 
 replicasCount: 1

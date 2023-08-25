@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ktswebinar
+  labels:
+    app.kubernetes.io/name: backend-ingress
+    app.kubernetes.io/component: ingress
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: gunicorn
+      protocol: TCP
+      name: backend-ingress
+  selector:
+    app.kubernetes.io/name: backend-ingress
+    app.kubernetes.io/component: ingress

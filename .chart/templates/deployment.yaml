@@ -3,33 +3,41 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-django-app
   labels:
-    app: {{ .Release.Name }}-django-app
+    app.kubernetes.io/name: django
+    app.kubernetes.io/component: backend
 spec:
   replicas: {{ .Values.replicasCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-django-app
+      app.kubernetes.io/name: django
+      app.kubernetes.io/component: backend
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-django-app
+        app.kubernetes.io/name: django
+        app.kubernetes.io/component: backend
     spec:
       containers:
         - image: {{ .Values.container.django }}
           name: {{ .Release.Name }}-django-app
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8000
+            - containerPort: {{ .Values.config.django.port }}
               name: gunicorn
-
-        - image: {{ .Values.container.postgres }}
-          name: {{ .Release.Name }}-postgres
-          ports:
-            - containerPort: 5432
           env:
-            - name: POSTGRES_USER
-              value: {{ .Values.config.postgres.POSTGRES_USER }}
-            - name: POSTGRES_PASSWORD
-              value: {{ .Values.config.postgres.POSTGRES_PASSWORD }}
-            - name: POSTGRES_DB
+            - name: SECRET_KEY
+              value: {{ .Values.config.django.SECRET_KEY }}
+            - name: DEBUG
+              value: {{ .Values.config.django.DEBUG }}
+            - name: DATABASE_NAME
               value: {{ .Values.config.postgres.POSTGRES_DB }}
-
+            - name: DATABASE_USER
+              value: {{ .Values.config.postgres.POSTGRES_USER }}
+            - name: DATABASE_PASSWORD
+              value: {{ .Values.config.postgres.POSTGRES_PASSWORD }}
+            - name: DATABASE_HOST
+              value: {{ .Values.config.postgres.POSTGRES_HOST }}
+            - name: DATABASE_PORT
+              value: {{ .Values.config.postgres.POSTGRES_PORT }}
+            - name: YANDEX_GEOCODER
+              value: {{ .Values.config.django.YANDEX_GEOCODER }}

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-django-app
+  labels:
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/component: database
+spec:
+  replicas: {{ .Values.replicasCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgres
+      app.kubernetes.io/component: database
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: postgres
+        app.kubernetes.io/component: database
+    spec:
+      containers:
+        - image: {{ .Values.container.postgres }}
+          name: database
+          ports:
+            - containerPort: {{ .Values.config.postgres.POSTGRES_PORT }}
+              name: {{ .Values.config.postgres.POSTGRES_HOST }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.config.postgres.POSTGRES_USER }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.config.postgres.POSTGRES_PASSWORD }}
+            - name: POSTGRES_DB
+              value: {{ .Values.config.postgres.POSTGRES_DB }}
+
