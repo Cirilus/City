@@ -1,7 +1,4 @@
-up kubernetes prod:
-	helm install backend-prod ./.chart
-
-up kubernetes dev:
+k8s up:
 	helm install backend-dev ./.chart
 
 validate helm:
