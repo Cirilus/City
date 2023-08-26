@@ -20,4 +20,4 @@ COPY --chown=project:project . .
 RUN pip install -r requirements.txt
 USER project
 
-CMD ["/manage.py collectstatic --noinput && ./manage.py makemigrations Authentication Object && ./manage.py migrate  && ./manage.py initadmin && gunicorn -b 0.0.0.0:8000 project.wsgi:application"]
+CMD ["gunicorn -b 0.0.0.0:8000 project.wsgi:application"]

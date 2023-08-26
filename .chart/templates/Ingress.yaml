@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: backend-ingress
     app.kubernetes.io/component: ingress
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 8000
       targetPort: gunicorn
